@@ -1,0 +1,59 @@
+﻿@model PhoneAddressBook.Models.Records.RecordCreateInputModel
+@inject PhoneAddressBook.Services.Countries.ICountriesService countryService
+@{
+    ViewData["Title"] = "Create Record";
+}
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+        <form asp-controller="Records" asp-action="Create" class="form-group" method="post">
+            <div>
+                <label asp-for="FirstName"> </label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="LastName"> </label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-3 col-md-2">
+                    <label>Code</label>
+                    <input asp-for="CountryCallCode" id="codeValue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="form-control" value="+359" />
+                    <div class="dropdown-menu" style="max-height: 150px; width: 100%; overflow:auto">
+                        @foreach (var country in countryService.GetAll())
+                        {
+                            var flagSrc = $"/Country-Flags-ISO-3/{country.Iso3Code.ToLower()}.gif";
+                            <a class="dropdown-item btn" onclick="selectCode('@country.CallCode')">
+                                <img src="@flagSrc" />
+                                <span class="small"> @country.Iso3Code @country.CallCode</span>
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-9 col-md-10">
+                    <label asp-for="PhoneNumber"> </label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <button class="btn btn-success col-12">Create</button>
+        </form>
+    </div>
+    <div class="col-2"></div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function selectCode(code) {
+            console.log(code);
+            $("#codeValue").val(code);
+        }
+
+    </script>
+}

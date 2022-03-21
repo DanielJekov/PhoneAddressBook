@@ -1,0 +1,46 @@
+﻿@model ICollection<PhoneAddressBook.Models.Records.RecordViewModel>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Insta Delete</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @{
+            var pageRaw = System.Text.RegularExpressions.Regex.Match(Context.Request.Path , @"[0-9]+").ToString();
+            const int ItemPerPage = 12;
+            var isNumber = int.TryParse(pageRaw, out int page);
+            var recordsCounter = 0;
+            if (isNumber)
+            {
+                recordsCounter = (page * ItemPerPage) - ItemPerPage;
+            }
+
+            foreach (var record in Model)
+            {
+                recordsCounter++;
+                var id = string.Concat("Record", record.Id.ToString());
+                <tr id="@id">
+                    <th scope="row">@recordsCounter</th>
+                    <td>@record.FirstName</td>
+                    <td>@record.LastName</td>
+                    <td>
+                        <a class="item-phone" href="tel:@record.FullNumber">
+                            @record.FullNumber
+                        </a>
+                    </td>
+                    <td>
+                        <input name="id" type="hidden" value="@record.Id">
+                        <div onclick="Delete(@record.Id)" class="btn btn-danger">Delete</div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

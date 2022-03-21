@@ -1,0 +1,21 @@
+﻿@model PhoneAddressBook.Models.Records.RecordListViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (this.User.Identity.IsAuthenticated)
+{
+    <partial name="_ControllButtonsPartial" model="@Model.Records" />
+
+    <partial name="_RecordsPrintPartial" model="@Model.Records" />
+    <partial name="_PagingPartial" model="@Model" />
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>After register in our platform you can store phone numbers.</p>
+        <p>Also you can use search tab and find quick your contact needed.</p>
+    </div>
+}
+

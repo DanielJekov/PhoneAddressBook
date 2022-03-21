@@ -1,0 +1,31 @@
+﻿@model PhoneAddressBook.Models.Search.SearchViewModel
+@{
+    ViewData["Title"] = "Result";
+}
+@{
+    var isEmptyNamesCollection = Model.ResultsByNames.Count != 0;
+    var isEmptyPhoneCollection = Model.ResultsByPhoneNumber.Count != 0;
+}
+
+<partial name="_ControllButtonsPartial" model="@Model" />
+
+@if (!isEmptyNamesCollection && !isEmptyPhoneCollection)
+{
+    <h4 class="text-center mt-5">There are no results by given criteria.</h4>
+}
+
+@if (isEmptyNamesCollection)
+{
+    <div class="mb-5">
+        <h5 class="mb-2 text-center" style="color: brown">Results by Names</h5>
+        <partial name="_RecordsPrintPartial" model="@Model.ResultsByNames" />
+    </div>
+}
+
+@if (isEmptyPhoneCollection)
+{
+    <div class="mb-5">
+        <h5 class="mb-2 text-center" style="color: brown">Results by Phone Number</h5>
+        <partial name="_RecordsPrintPartial" model="@Model.ResultsByPhoneNumber" />
+    </div>
+}
